@@ -46,12 +46,16 @@ Each is resolved in this order:
 2. **File** — `.model` / `.tools-model` (single line with the model name)
 3. **Auto-detect** — picks the best Gemma model based on system RAM:
 
-| RAM | Model | Tools model |
-|--------|--------------|-------------------------------|
-| 32 GB+ | `gemma3:27b` | `orieg/gemma3-tools:27b-ft` |
-| 10 GB+ | `gemma3:12b` | `orieg/gemma3-tools:12b-ft` |
-| 10 GB+ | `gemma3:4b` | `orieg/gemma3-tools:12b-ft` |
-| < 10 GB | `gemma3:1b` | `orieg/gemma3-tools:4b-ft` |
+| RAM | Model | Tools model | Notes |
+|--------|----------------|--------------------------------|-------|
+| 24 GB+ | `gemma4:31b` | `gemma4:31b` | Best quality |
+| 22 GB+ | `gemma4:26b` | `gemma4:26b` | MoE, fast |
+| 12 GB+ | `gemma4:e4b` | `gemma4:e4b` | |
+| 9 GB+ | `gemma4:e2b` | `gemma4:e2b` | |
+| 4 GB+ | `gemma3:4b` | `orieg/gemma3-tools:12b-ft` | Gemma 3 fallback |
+| < 4 GB | `gemma3:1b` | `orieg/gemma3-tools:4b-ft` | Gemma 3 fallback |
+
+Gemma 4 has native tool calling, so the same model is used for both chat and agents. Machines that can't run Gemma 4 fall back to Gemma 3 with a separate [gemma3-tools](https://ollama.com/orieg/gemma3-tools) fine-tune for tool calling.
 
 ## Agents
 

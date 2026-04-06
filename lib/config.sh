@@ -25,15 +25,22 @@ _detect_ram_gb() {
 
 # ── Model auto-selection ─────────────────────────────────────────────────────
 
+# Gemma 4 has native tool calling, so we use the same model for both.
+# Fall back to Gemma 3 + gemma3-tools for machines that can't run any Gemma 4.
+
 _auto_select_model() {
   local ram_gb
   ram_gb=$(_detect_ram_gb)
 
-  if (( ram_gb >= 32 )); then
-    echo "gemma3:27b"
-  elif (( ram_gb >= 16 )); then
-    echo "gemma3:12b"
-  elif (( ram_gb >= 10 )); then
+  if (( ram_gb >= 24 )); then
+    echo "gemma4:31b"
+  elif (( ram_gb >= 22 )); then
+    echo "gemma4:26b"
+  elif (( ram_gb >= 12 )); then
+    echo "gemma4:e4b"
+  elif (( ram_gb >= 9 )); then
+    echo "gemma4:e2b"
+  elif (( ram_gb >= 4 )); then
     echo "gemma3:4b"
   else
     echo "gemma3:1b"
@@ -44,9 +51,17 @@ _auto_select_tools_model() {
   local ram_gb
   ram_gb=$(_detect_ram_gb)
 
-  if (( ram_gb >= 32 )); then
-    echo "orieg/gemma3-tools:27b-ft"
-  elif (( ram_gb >= 10 )); then
+  # Gemma 4 supports tool calling natively
+  if (( ram_gb >= 24 )); then
+    echo "gemma4:31b"
+  elif (( ram_gb >= 22 )); then
+    echo "gemma4:26b"
+  elif (( ram_gb >= 12 )); then
+    echo "gemma4:e4b"
+  elif (( ram_gb >= 9 )); then
+    echo "gemma4:e2b"
+  # Fall back to gemma3-tools fine-tune
+  elif (( ram_gb >= 4 )); then
     echo "orieg/gemma3-tools:12b-ft"
   else
     echo "orieg/gemma3-tools:4b-ft"
