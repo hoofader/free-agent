@@ -4,6 +4,8 @@ Run AI coding agents locally via [Ollama](https://ollama.com). No API key. No cl
 
 Defaults to the best [Gemma](https://deepmind.google/models/gemma/) model for your machine, but works with any Ollama model.
 
+![demo](demo.gif)
+
 ## Requirements
 
 - macOS (Apple Silicon) or Linux
