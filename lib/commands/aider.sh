@@ -3,14 +3,9 @@ SUBCMD="${1:-run}"
 
 case "$SUBCMD" in
   setup)
-    if ! command -v python3 &>/dev/null; then
-      echo "Error: python3 is required. Install it with: brew install python3"
-      exit 1
-    fi
-
     if [ ! -d "$VENV_DIR" ]; then
-      echo "Creating virtual environment..."
-      python3 -m venv "$VENV_DIR"
+      echo "Creating virtual environment ($PYTHON)..."
+      "$PYTHON" -m venv "$VENV_DIR"
     fi
 
     echo "Installing aider-chat..."

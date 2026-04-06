@@ -4,11 +4,6 @@ SUBCMD="${1:-run}"
 
 case "$SUBCMD" in
   setup)
-    if ! command -v python3 &>/dev/null; then
-      echo "Error: python3 is required. Install it with: brew install python3"
-      exit 1
-    fi
-
     if [ -d "$NCC_DIR" ]; then
       echo "Updating nano-claude-code..."
       git -C "$NCC_DIR" pull --ff-only
@@ -18,8 +13,8 @@ case "$SUBCMD" in
     fi
 
     if [ ! -d "$VENV_DIR" ]; then
-      echo "Creating virtual environment..."
-      python3 -m venv "$VENV_DIR"
+      echo "Creating virtual environment ($PYTHON)..."
+      "$PYTHON" -m venv "$VENV_DIR"
     fi
 
     echo "Installing dependencies..."
@@ -63,7 +58,7 @@ CONF
 
     ensure_ollama
 
-    exec "$VENV_DIR/bin/python3" "$NCC_DIR/nano_claude.py" "${@:2}"
+    exec "$VENV_DIR/bin/python" "$NCC_DIR/nano_claude.py" "${@:2}"
     ;;
   *)
     echo "Usage: ./free-agent ncc [setup|run]" >&2

@@ -61,6 +61,27 @@ _resolve_model() {
 
 MODEL="$(_resolve_model)"
 
+# ── Python detection ─────────────────────────────────────────────────────────
+
+_find_python() {
+  # Prefer Python 3.11-3.13 (3.14+ has compatibility issues with many packages)
+  for v in python3.13 python3.12 python3.11; do
+    if command -v "$v" &>/dev/null; then
+      echo "$v"
+      return
+    fi
+  done
+  # Fall back to default python3
+  if command -v python3 &>/dev/null; then
+    echo "python3"
+    return
+  fi
+  echo "Error: python3 is required. Install it with: brew install python@3.12" >&2
+  exit 1
+}
+
+PYTHON="$(_find_python)"
+
 # ── Ollama helpers ───────────────────────────────────────────────────────────
 
 ensure_ollama() {
