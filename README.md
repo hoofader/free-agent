@@ -76,6 +76,15 @@ The model is resolved in this order:
 | **Bash execution** | User-initiated (`/run`) | Autonomous (with permission gate) |
 | **Model flexibility** | High (any model works) | Depends on model's tool-calling quality |
 
+## Contributing
+
+Contributions are welcome! Here's how to help:
+
+1. **Fork** the repo and create a feature branch
+2. **Make your changes** — keep commits focused and descriptive
+3. **Test** that `./free-agent help` and `./free-agent model` still work
+4. **Open a PR** with a clear description of what you changed and why
+
 ## Project Structure
 
 ```
