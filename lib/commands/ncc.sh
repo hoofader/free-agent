@@ -29,7 +29,7 @@ case "$SUBCMD" in
     mkdir -p "$CONFIG_DIR"
 
     if [ ! -f "$CONFIG_FILE" ]; then
-      echo "Writing default config for Ollama + ${TOOLS_MODEL}..."
+      echo "Writing config for Ollama + ${TOOLS_MODEL}..."
       cat > "$CONFIG_FILE" << CONF
 {
   "model": "ollama/${TOOLS_MODEL}",
@@ -42,8 +42,16 @@ case "$SUBCMD" in
 }
 CONF
     else
-      echo "Config already exists at $CONFIG_FILE"
-      echo "To use ${TOOLS_MODEL}, set model to: ollama/${TOOLS_MODEL}"
+      # Always update the model to match the current tools model
+      if command -v python3 &>/dev/null; then
+        python3 -c "
+import json, sys
+with open('$CONFIG_FILE') as f: cfg = json.load(f)
+cfg['model'] = 'ollama/${TOOLS_MODEL}'
+with open('$CONFIG_FILE', 'w') as f: json.dump(cfg, f, indent=2)
+"
+      fi
+      echo "Config updated: model set to ollama/${TOOLS_MODEL}"
     fi
 
     echo ""
