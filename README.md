@@ -21,7 +21,7 @@ Defaults to the best [Gemma](https://deepmind.google/models/gemma/) model for yo
 ## Commands
 
 ```
-./free-agent setup           Install Ollama and pull the model
+./free-agent setup           Install Ollama and pull both models
 ./free-agent chat            Interactive chat session
 ./free-agent api "prompt"    Single-prompt API call
 ./free-agent stop            Stop the Ollama server
@@ -29,24 +29,29 @@ Defaults to the best [Gemma](https://deepmind.google/models/gemma/) model for yo
 ./free-agent aider           Launch Aider
 ./free-agent ncc setup       Clone + install nano-claude-code
 ./free-agent ncc             Launch nano-claude-code
-./free-agent model           Show the resolved model name
+./free-agent model           Show the resolved model names
 ./free-agent help            Show help
 ```
 
 ## Choosing a Model
 
-The model is resolved in this order:
+free-agent uses two models:
 
-1. **`FREE_AGENT_MODEL` env var** — `FREE_AGENT_MODEL=llama3.3 ./free-agent chat`
-2. **`.model` file** — create a `.model` file with the model name (e.g. `qwen2.5-coder:32b`)
-3. **Auto-detect** — picks the best Gemma 3 model based on system RAM:
+- **Model** — for chat, Aider, and the API (`gemma3`)
+- **Tools model** — for nano-claude-code, which needs tool calling ([`orieg/gemma3-tools`](https://ollama.com/orieg/gemma3-tools))
 
-| RAM | Model |
-|--------|--------------|
-| 32 GB+ | `gemma3:27b` |
-| 16 GB+ | `gemma3:12b` |
-| 10 GB+ | `gemma3:4b` |
-| < 10 GB | `gemma3:1b` |
+Each is resolved in this order:
+
+1. **Env var** — `FREE_AGENT_MODEL` / `FREE_AGENT_TOOLS_MODEL`
+2. **File** — `.model` / `.tools-model` (single line with the model name)
+3. **Auto-detect** — picks the best Gemma model based on system RAM:
+
+| RAM | Model | Tools model |
+|--------|--------------|-------------------------------|
+| 32 GB+ | `gemma3:27b` | `orieg/gemma3-tools:27b-ft` |
+| 10 GB+ | `gemma3:12b` | `orieg/gemma3-tools:12b-ft` |
+| 10 GB+ | `gemma3:4b` | `orieg/gemma3-tools:12b-ft` |
+| < 10 GB | `gemma3:1b` | `orieg/gemma3-tools:4b-ft` |
 
 ## Agents
 
@@ -61,7 +66,7 @@ The model is resolved in this order:
 
 ### nano-claude-code (full Claude Code experience)
 
-[nano-claude-code](https://github.com/SafeRL-Lab/nano-claude-code) is a model-agnostic reimplementation of Claude Code with native Ollama support. Gives your model autonomous tool access: file read/write/edit, bash, web fetch/search, sub-agents, MCP, and more.
+[nano-claude-code](https://github.com/SafeRL-Lab/nano-claude-code) is a model-agnostic reimplementation of Claude Code with native Ollama support. Gives your model autonomous tool access: file read/write/edit, bash, web fetch/search, sub-agents, MCP, and more. Uses the [gemma3-tools](https://ollama.com/orieg/gemma3-tools) fine-tune for reliable tool calling.
 
 ```bash
 ./free-agent ncc setup      # one-time

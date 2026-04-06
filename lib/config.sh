@@ -2,9 +2,9 @@
 # Shared configuration for free-agent scripts.
 # Source this file — do not execute directly.
 #
-# Model resolution order:
-#   1. FREE_AGENT_MODEL environment variable
-#   2. .model file in project root (single line: model name)
+# Model resolution order (FREE_AGENT_MODEL / FREE_AGENT_TOOLS_MODEL):
+#   1. Environment variable
+#   2. .model / .tools-model file in project root (single line: model name)
 #   3. Auto-detect best Gemma model based on system RAM
 
 set -euo pipefail
@@ -40,6 +40,19 @@ _auto_select_model() {
   fi
 }
 
+_auto_select_tools_model() {
+  local ram_gb
+  ram_gb=$(_detect_ram_gb)
+
+  if (( ram_gb >= 32 )); then
+    echo "orieg/gemma3-tools:27b-ft"
+  elif (( ram_gb >= 10 )); then
+    echo "orieg/gemma3-tools:12b-ft"
+  else
+    echo "orieg/gemma3-tools:4b-ft"
+  fi
+}
+
 # ── Resolve model ────────────────────────────────────────────────────────────
 
 _resolve_model() {
@@ -59,7 +72,22 @@ _resolve_model() {
   _auto_select_model
 }
 
+_resolve_tools_model() {
+  if [[ -n "${FREE_AGENT_TOOLS_MODEL:-}" ]]; then
+    echo "$FREE_AGENT_TOOLS_MODEL"
+    return
+  fi
+
+  if [[ -f "$SCRIPT_DIR/.tools-model" ]]; then
+    head -1 "$SCRIPT_DIR/.tools-model" | tr -d '[:space:]'
+    return
+  fi
+
+  _auto_select_tools_model
+}
+
 MODEL="$(_resolve_model)"
+TOOLS_MODEL="$(_resolve_tools_model)"
 
 # ── Python detection ─────────────────────────────────────────────────────────
 

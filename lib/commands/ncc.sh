@@ -29,10 +29,10 @@ case "$SUBCMD" in
     mkdir -p "$CONFIG_DIR"
 
     if [ ! -f "$CONFIG_FILE" ]; then
-      echo "Writing default config for Ollama + ${MODEL}..."
+      echo "Writing default config for Ollama + ${TOOLS_MODEL}..."
       cat > "$CONFIG_FILE" << CONF
 {
-  "model": "ollama/${MODEL}",
+  "model": "ollama/${TOOLS_MODEL}",
   "max_tokens": 40000,
   "permission_mode": "auto",
   "thinking": false,
@@ -43,12 +43,12 @@ case "$SUBCMD" in
 CONF
     else
       echo "Config already exists at $CONFIG_FILE"
-      echo "To use ${MODEL}, set model to: ollama/${MODEL}"
+      echo "To use ${TOOLS_MODEL}, set model to: ollama/${TOOLS_MODEL}"
     fi
 
     echo ""
     echo "Setup complete! Run './free-agent ncc' to start."
-    echo "Model: $MODEL"
+    echo "Model: $TOOLS_MODEL"
     ;;
   run)
     if [ ! -d "$VENV_DIR" ] || [ ! -d "$NCC_DIR" ]; then

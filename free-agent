@@ -14,7 +14,10 @@ case "$CMD" in
   stop)   source "$SCRIPT_DIR/lib/commands/stop.sh" "$@" ;;
   aider)  source "$SCRIPT_DIR/lib/commands/aider.sh" "$@" ;;
   ncc)    source "$SCRIPT_DIR/lib/commands/ncc.sh" "$@" ;;
-  model)  echo "$MODEL" ;;
+  model)
+    echo "Model:       $MODEL"
+    echo "Tools model: $TOOLS_MODEL"
+    ;;
   help|--help|-h)
     cat <<EOF
 free-agent — run AI coding agents locally via Ollama
@@ -22,17 +25,19 @@ free-agent — run AI coding agents locally via Ollama
 Usage: ./free-agent <command> [args]
 
 Commands:
-  setup           Install Ollama and pull the model
+  setup           Install Ollama and pull both models
   chat            Interactive chat session
   api "prompt"    Single-prompt API call
   stop            Stop the Ollama server
   aider [setup]   Launch Aider (or run setup first)
   ncc   [setup]   Launch nano-claude-code (or run setup first)
-  model           Show the resolved model name
+  model           Show the resolved model names
 
-Model: $MODEL
+Model:       $MODEL (chat, aider)
+Tools model: $TOOLS_MODEL (ncc — tool calling)
 
-Override the model with FREE_AGENT_MODEL env var or a .model file.
+Override with FREE_AGENT_MODEL / FREE_AGENT_TOOLS_MODEL env vars
+or .model / .tools-model files.
 EOF
     ;;
   *)
