@@ -1,7 +1,3 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-source "$(cd "$(dirname "$0")" && pwd)/lib/config.sh"
 ensure_ollama
 
 echo "Starting ${MODEL} interactive chat..."

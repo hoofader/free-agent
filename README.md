@@ -12,15 +12,30 @@ Defaults to the best [Gemma](https://deepmind.google/models/gemma/) model for yo
 ## Quick Start
 
 ```bash
-./setup.sh          # install Ollama + pull the best model for your machine
-./chat.sh           # interactive chat
+./free-agent setup      # install Ollama + pull the best model for your machine
+./free-agent chat       # interactive chat
+```
+
+## Commands
+
+```
+./free-agent setup           Install Ollama and pull the model
+./free-agent chat            Interactive chat session
+./free-agent api "prompt"    Single-prompt API call
+./free-agent stop            Stop the Ollama server
+./free-agent aider setup     Install Aider in a venv
+./free-agent aider           Launch Aider
+./free-agent ncc setup       Clone + install nano-claude-code
+./free-agent ncc             Launch nano-claude-code
+./free-agent model           Show the resolved model name
+./free-agent help            Show help
 ```
 
 ## Choosing a Model
 
 The model is resolved in this order:
 
-1. **`FREE_AGENT_MODEL` env var** — `FREE_AGENT_MODEL=llama3.3 ./chat.sh`
+1. **`FREE_AGENT_MODEL` env var** — `FREE_AGENT_MODEL=llama3.3 ./free-agent chat`
 2. **`.model` file** — create a `.model` file with the model name (e.g. `qwen2.5-coder:32b`)
 3. **Auto-detect** — picks the best Gemma 3 model based on system RAM:
 
@@ -31,22 +46,24 @@ The model is resolved in this order:
 | 10 GB+ | `gemma3:4b` |
 | < 10 GB | `gemma3:1b` |
 
-## Aider (code editing agent)
+## Agents
+
+### Aider (code editing)
 
 [Aider](https://github.com/Aider-AI/aider) uses its own edit-format protocol — no LLM tool-calling needed, so it works reliably with any local model.
 
 ```bash
-./aider-setup.sh    # create venv + install aider-chat
-./aider-run.sh      # launch aider
+./free-agent aider setup    # one-time
+./free-agent aider          # launch
 ```
 
-## nano-claude-code (full Claude Code experience)
+### nano-claude-code (full Claude Code experience)
 
 [nano-claude-code](https://github.com/SafeRL-Lab/nano-claude-code) is a model-agnostic reimplementation of Claude Code with native Ollama support. Gives your model autonomous tool access: file read/write/edit, bash, web fetch/search, sub-agents, MCP, and more.
 
 ```bash
-./ncc-setup.sh      # clone repo + install deps + configure
-./ncc-run.sh        # launch nano-claude-code
+./free-agent ncc setup      # one-time
+./free-agent ncc            # launch
 ```
 
 ### Which to use?
@@ -59,26 +76,17 @@ The model is resolved in this order:
 | **Bash execution** | User-initiated (`/run`) | Autonomous (with permission gate) |
 | **Model flexibility** | High (any model works) | Depends on model's tool-calling quality |
 
-## Scripts
+## Project Structure
 
-| Script | Purpose |
-|-----------------|------------------------------------------------|
-| `setup.sh` | Install Ollama and pull the selected model |
-| `chat.sh` | Interactive chat |
-| `api.sh` | Single-prompt API call: `./api.sh "prompt"` |
-| `stop.sh` | Stop the Ollama server |
-| `aider-setup.sh` | Install Aider in a venv |
-| `aider-run.sh` | Launch Aider |
-| `ncc-setup.sh` | Clone + install nano-claude-code |
-| `ncc-run.sh` | Launch nano-claude-code |
-
-## API Usage
-
-Ollama exposes an OpenAI-compatible API at `http://localhost:11434`:
-
-```bash
-./api.sh "Explain quantum computing in one paragraph"
-
-# Or with a specific model:
-FREE_AGENT_MODEL=mistral ./api.sh "Hello!"
+```
+free-agent          # CLI entrypoint
+lib/
+  config.sh         # shared config, model detection, Ollama helpers
+  commands/
+    setup.sh        # Ollama install + model pull
+    chat.sh         # interactive chat
+    api.sh          # single-prompt API call
+    stop.sh         # stop Ollama server
+    aider.sh        # Aider setup + run
+    ncc.sh          # nano-claude-code setup + run
 ```

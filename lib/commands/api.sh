@@ -1,9 +1,4 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-source "$(cd "$(dirname "$0")" && pwd)/lib/config.sh"
-
-PROMPT="${1:?Usage: ./api.sh \"your prompt here\"}"
+PROMPT="${1:?Usage: ./free-agent api \"your prompt here\"}"
 
 ensure_ollama
 
