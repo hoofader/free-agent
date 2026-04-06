@@ -11,8 +11,13 @@ case "$SUBCMD" in
     echo "Installing aider-chat..."
     "$VENV_DIR/bin/pip" install -q aider-chat
 
+    ensure_ollama
+    echo "Pulling ${MODEL} (this may take a while on first run)..."
+    ollama pull "$MODEL"
+
     echo ""
     echo "Setup complete! Run './free-agent aider' to start."
+    echo "Model: $MODEL"
     ;;
   run)
     if [ ! -d "$VENV_DIR" ]; then

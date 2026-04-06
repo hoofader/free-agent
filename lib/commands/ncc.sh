@@ -54,6 +54,10 @@ with open('$CONFIG_FILE', 'w') as f: json.dump(cfg, f, indent=2)
       echo "Config updated: model set to ollama/${TOOLS_MODEL}"
     fi
 
+    ensure_ollama
+    echo "Pulling ${TOOLS_MODEL} (this may take a while on first run)..."
+    ollama pull "$TOOLS_MODEL"
+
     echo ""
     echo "Setup complete! Run './free-agent ncc' to start."
     echo "Model: $TOOLS_MODEL"
