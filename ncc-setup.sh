@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "=== nano-claude-code Setup ==="
+source "$(cd "$(dirname "$0")" && pwd)/lib/config.sh"
 
-# Check Python 3
+echo "=== nano-claude-code setup ==="
+
 if ! command -v python3 &>/dev/null; then
   echo "Error: python3 is required. Install it with: brew install python3"
   exit 1
 fi
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 NCC_DIR="$SCRIPT_DIR/nano-claude-code"
 VENV_DIR="$SCRIPT_DIR/.venv-ncc"
 
@@ -35,16 +35,16 @@ else
   "$VENV_DIR/bin/pip" install -q anthropic openai rich httpx
 fi
 
-# Write config for Ollama + Gemma 3 27B
+# Write config for Ollama
 CONFIG_DIR="$HOME/.nano_claude"
 CONFIG_FILE="$CONFIG_DIR/config.json"
 mkdir -p "$CONFIG_DIR"
 
 if [ ! -f "$CONFIG_FILE" ]; then
-  echo "Writing default config for Ollama + Gemma 3 27B..."
-  cat > "$CONFIG_FILE" << 'CONF'
+  echo "Writing default config for Ollama + ${MODEL}..."
+  cat > "$CONFIG_FILE" << CONF
 {
-  "model": "ollama/gemma3:27b",
+  "model": "ollama/${MODEL}",
   "max_tokens": 40000,
   "permission_mode": "auto",
   "thinking": false,
@@ -55,8 +55,9 @@ if [ ! -f "$CONFIG_FILE" ]; then
 CONF
 else
   echo "Config already exists at $CONFIG_FILE"
-  echo "To use Gemma 3 27B, set model to: ollama/gemma3:27b"
+  echo "To use ${MODEL}, set model to: ollama/${MODEL}"
 fi
 
 echo ""
 echo "Setup complete! Run ./ncc-run.sh to start."
+echo "Model: $MODEL"
