@@ -32,7 +32,7 @@ _auto_select_model() {
   local ram_gb
   ram_gb=$(_detect_ram_gb)
 
-  if (( ram_gb >= 24 )); then
+  if (( ram_gb >= 48 )); then
     echo "gemma4:31b"
   elif (( ram_gb >= 22 )); then
     echo "gemma4:26b"
@@ -52,7 +52,7 @@ _auto_select_tools_model() {
   ram_gb=$(_detect_ram_gb)
 
   # Gemma 4 supports tool calling natively
-  if (( ram_gb >= 24 )); then
+  if (( ram_gb >= 48 )); then
     echo "gemma4:31b"
   elif (( ram_gb >= 22 )); then
     echo "gemma4:26b"

@@ -48,7 +48,7 @@ Each is resolved in this order:
 
 | RAM | Model | Tools model | Notes |
 |--------|----------------|--------------------------------|-------|
-| 24 GB+ | `gemma4:31b` | `gemma4:31b` | Best quality |
+| 48 GB+ | `gemma4:31b` | `gemma4:31b` | Best quality |
 | 22 GB+ | `gemma4:26b` | `gemma4:26b` | MoE, fast |
 | 12 GB+ | `gemma4:e4b` | `gemma4:e4b` | |
 | 9 GB+ | `gemma4:e2b` | `gemma4:e2b` | |
