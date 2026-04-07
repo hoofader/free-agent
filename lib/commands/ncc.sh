@@ -70,7 +70,12 @@ with open('$CONFIG_FILE', 'w') as f: json.dump(cfg, f, indent=2)
 
     ensure_ollama
 
-    exec "$VENV_DIR/bin/python" "$NCC_DIR/nano_claude.py" "${@:2}"
+    # Entrypoint: cheetahclaws.py (formerly nano_claude.py)
+    ENTRYPOINT="$NCC_DIR/cheetahclaws.py"
+    if [ ! -f "$ENTRYPOINT" ]; then
+      ENTRYPOINT="$NCC_DIR/nano_claude.py"
+    fi
+    exec "$VENV_DIR/bin/python" "$ENTRYPOINT" "${@:2}"
     ;;
   *)
     echo "Usage: ./free-agent ncc [setup|run]" >&2
