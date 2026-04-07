@@ -49,7 +49,6 @@ Each is resolved in this order:
 | RAM | Model | Tools model | Notes |
 |--------|----------------|--------------------------------|-------|
 | 48 GB+ | `gemma4:31b` | `gemma4:31b` | Best quality |
-| 22 GB+ | `gemma4:26b` | `gemma4:26b` | MoE, fast |
 | 12 GB+ | `gemma4:e4b` | `gemma4:e4b` | |
 | 9 GB+ | `gemma4:e2b` | `gemma4:e2b` | |
 | 4 GB+ | `gemma3:4b` | `orieg/gemma3-tools:12b-ft` | Gemma 3 fallback |

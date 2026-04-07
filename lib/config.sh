@@ -34,8 +34,6 @@ _auto_select_model() {
 
   if (( ram_gb >= 48 )); then
     echo "gemma4:31b"
-  elif (( ram_gb >= 22 )); then
-    echo "gemma4:26b"
   elif (( ram_gb >= 12 )); then
     echo "gemma4:e4b"
   elif (( ram_gb >= 9 )); then
@@ -54,8 +52,6 @@ _auto_select_tools_model() {
   # Gemma 4 supports tool calling natively
   if (( ram_gb >= 48 )); then
     echo "gemma4:31b"
-  elif (( ram_gb >= 22 )); then
-    echo "gemma4:26b"
   elif (( ram_gb >= 12 )); then
     echo "gemma4:e4b"
   elif (( ram_gb >= 9 )); then
